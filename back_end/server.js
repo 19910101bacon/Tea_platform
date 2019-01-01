@@ -11,11 +11,11 @@ var parseUrlencoded = bodyParser.urlencoded({
 });
 
 app.all('*', function(req, res, next) { //TO fix the CORS bug
-   res.header('Access-Control-Allow-Origin', '*');
-   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-   res.header('Access-Control-Allow-Headers', 'Content-Type');
-   next();
- });
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
 
 app.use(express.static('./front_end'));
 
@@ -47,7 +47,76 @@ app.post('/items', parseUrlencoded, function(request, response) {
       console.log(err);
     }
   });
+});
+
+app.post('/items/update', parseUrlencoded, function(request, response) {
+  // var json = {
+  //   Iname: request.body.Iname,
+  //   Price: request.body.Price,
+  //   State: request.body.State
+  // }
+  // console.log(request.body);
+
+
+  item.update({
+    Iname: request.body.Iname,
+    State: "上架"
+  }, {
+    $set: {
+      State: "下架"
+    }
+  }, function(err, result) {
+    if (err)
+      console.log(err);
+    console.log(result);
+
+    var json = {
+      Iname: request.body.Iname,
+      Price: request.body.Price,
+      State: "上架"
+    }
+    // console.log(request.body);
+
+    json.Timestamp = +new Date();
+    newjson = new item(json);
+    newjson.save(function(err) {
+      if (!err) {
+        response.send("Success!");
+      } else {
+        console.log(err);
+      }
+    });
+
+
+    //
+  });
+
+
+  // item.find({
+  //   Iname: request.body.Iname,
+  //   State: "上架"
+  // }, function(err, result) {
+  //
+  //
+  //
+  //
+  //   result.State = "下架";
+  //   response.send(result);
+  //   console.log(result);
+  // })
+
+
+  // json.Timestamp = +new Date();
+  // newjson = new item(json);
+  // newjson.save(function(err) {
+  //   if (!err) {
+  //     response.send("Success!");
+  //   } else {
+  //     console.log(err);
+  //   }
+  // });
 })
+
 
 app.get('/purchases', function(request, response) {
   purchase.find(function(err, result) {
