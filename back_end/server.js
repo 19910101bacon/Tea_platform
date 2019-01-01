@@ -17,7 +17,7 @@ app.all('*', function(req, res, next) { //TO fix the CORS bug
   next();
 });
 
-app.use(express.static('./front_end'));
+app.use(express.static('../front_end'));
 
 app.get('/', function(request, response) {
   response.send("Hello World!");
