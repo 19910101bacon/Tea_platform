@@ -10,6 +10,13 @@ var parseUrlencoded = bodyParser.urlencoded({
   extended: false
 });
 
+app.all('*', function(req, res, next) { //TO fix the CORS bug
+   res.header('Access-Control-Allow-Origin', '*');
+   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+   res.header('Access-Control-Allow-Headers', 'Content-Type');
+   next();
+ });
+
 app.use(express.static('./front_end'));
 
 app.get('/', function(request, response) {
