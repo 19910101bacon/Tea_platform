@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/Tea_platform');
 var express = require('express');
 var app = express();
-var item = require('../model/Item');
-var purchase = require('../model/Purchase');
-var customer = require('../model/Customer');
+var item = require('./model/Item');
+var purchase = require('./model/Purchase');
+var customer = require('./model/Customer');
 var bodyParser = require('body-parser');
 var parseUrlencoded = bodyParser.urlencoded({
   extended: false
