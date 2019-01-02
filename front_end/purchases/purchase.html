@@ -21,7 +21,7 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-  <script src="../js/javascript_customer.js"></script>
+  <script src="../js/javascript_purchase.js"></script>
   <script src="../js/javascript_style.js"></script>
 
 </head>
@@ -38,50 +38,70 @@
   </div>
 
 
-  <div class="container">
-    <div class="table-wrapper">
-      <div class="table-title">
-        <div class="row">
-          <div class="col-sm-8">
-            <h2 style="font-size:30px">消費者 <b>資訊</b></h2>
-          </div>
-          <div class="col-sm-4">
-            <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
-          </div>
+  <div class="py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <i class="material-icons">adjust</i>
+          <a class="h2"> 購買人：</a>
+          <form class="form-inline offset-xl-1">
+            <div class="form-group">
+              <input type="text" class="form-control h3" id="inputnameinline" placeholder="黃小明" style="height:120%"> </div>
+            <div class="form-group">
+              <input type="tel" class="form-control mx-2 h3" id="inputtellphoneinline" placeholder="09xxxxxxxx" style="height:120%"> </div>
+              <button type="button" class="btn btn-primary h5" id="customer-confirm">購買人身份確認</button>
+
+            <input type="text" class="form-control h3" id="inputmoney" placeholder="500" style="height:120%">
+          </form>
         </div>
       </div>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th class="col col1 h6" data-column="col1" >消費者編號</th>
-            <th class="col col2 h6" data-column="col2" >名字</th>
-            <th class="col col3 h6" data-column="col3" >電話</th>
-            <th class="col col3 h6" data-column="col4" >行為</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="col col1 h6" data-column="col1" >1</td>
-            <td class="col col2 h6" data-column="col2" >黃培軒</td>
-            <td class="col col3 h6" data-column="col3" >0987654321</td>
-            <td>
-              <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-              <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-            </td>
-          </tr>
+    </div>
+  </div>
 
-        </tbody>
-      </table>
+  <div class="py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <i class="material-icons">adjust</i>
+          <a class="h2"> 購買人：</a>
+          <form class="form-inline offset-xl-1">
+            <input type="text" class="form-control h3" id="inputmoney" placeholder="500" style="height:120%">
+
+
+
+
+  <div class="py-5" id="container">
+    <div class="container" style="border-style: solid">
+      <div class="row">
+        <div class="col-md-12">
+          <form class="">
+
+            <div class="form-group">
+              <label class="h3" for="Cname">商品名稱：
+                <select name="Iname" id="Iname">
+                  <option class="h4" value="大吉嶺半斤">大吉嶺半斤</option>
+                  <option value="高山青茶二兩">高山青茶二兩</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label style="display: inline-block">幾份</label>
+              <input type="number" class="form-control" id="amount" placeholder="5">
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 
 
+  <button type="button" class="btn btn-primary h5" id="Add">新增新品項</button>
+  <button type="button" class="btn btn-primary h5" id="Save">儲存</button>
 
 
 
 
-
-
-  </body>
+</body>
 
 </html>
