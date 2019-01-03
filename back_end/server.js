@@ -30,6 +30,14 @@ app.get('/items', function(request, response) {
   })
 });
 
+app.get('/items/shelf', function(request, response) {
+  item.find(function(err, result) {
+    result_filter = result.filter(one_item => one_item['State'] == '上架')
+    response.send(result_filter);
+    console.log(result_filter);
+  })
+});
+
 app.post('/items', parseUrlencoded, function(request, response) {
   var json = {
     Iname: request.body.Iname,
@@ -49,21 +57,12 @@ app.post('/items', parseUrlencoded, function(request, response) {
   });
 });
 
-app.put('/items/update', parseUrlencoded, function(request, response) {
-  // var json = {
-  //   Iname: request.body.Iname,
-  //   Price: request.body.Price,
-  //   State: request.body.State
-  // }
-  // console.log(request.body);
-
-
-  item.update({
+app.put('/items/update', parseUrlencoded, function(request, response) {  item.update({
     Iname: request.body.Iname,
     State: "上架"
   }, {
     $set: {
-      State: "下架"
+      State: "刪除"
     }
   }, function(err, result) {
     if (err)
@@ -75,7 +74,6 @@ app.put('/items/update', parseUrlencoded, function(request, response) {
       Price: request.body.Price,
       State: "上架"
     }
-    // console.log(request.body);
 
     json.Timestamp = +new Date();
     newjson = new item(json);
@@ -86,35 +84,7 @@ app.put('/items/update', parseUrlencoded, function(request, response) {
         console.log(err);
       }
     });
-
-
-    //
   });
-
-
-  // item.find({
-  //   Iname: request.body.Iname,
-  //   State: "上架"
-  // }, function(err, result) {
-  //
-  //
-  //
-  //
-  //   result.State = "下架";
-  //   response.send(result);
-  //   console.log(result);
-  // })
-
-
-  // json.Timestamp = +new Date();
-  // newjson = new item(json);
-  // newjson.save(function(err) {
-  //   if (!err) {
-  //     response.send("Success!");
-  //   } else {
-  //     console.log(err);
-  //   }
-  // });
 })
 
 app.delete('/items/delete', parseUrlencoded, function(request, response) {
