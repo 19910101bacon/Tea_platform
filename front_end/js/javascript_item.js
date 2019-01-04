@@ -1,7 +1,11 @@
 $(document).ready(function() {
-  // $('[data-toggle="tooltip"]').tooltip();
   var actions = $("table td:last-child").html();
-  // Append table with add row form on add new button click
+
+
+
+
+
+
   $(".add-new").click(function() {
     $(this).attr("disabled", "disabled");
     var index = $("table tbody tr:last-child").index();
@@ -14,9 +18,109 @@ $(document).ready(function() {
       '</tr>';
     $("table").append(row);
     $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
-    // $('[data-toggle="tooltip"]').tooltip();
   });
+
   // Add row on add button click
+
+// 頁面載入時，執行一次表格載入
+  Get_items_data();
+  function Get_items_data() {
+    $.ajax("http://34.226.147.247:3000/items/shelf", {
+      type: 'GET',
+      success: function(result) {
+        // Create table
+        var table = document.createElement("table");
+        table.setAttribute("class", "table table-bordered")
+
+        var thead = document.createElement("thead");
+        var tbody = document.createElement("tbody");
+        var headRow = document.createElement("tr");
+
+        var HeadName = ["商品編號", "商品名稱(單位)", "價錢", "狀態", "行為"]
+        var AttributesClass = ["col col1 h6", "col col2 h6", "col col3 h6", "col col4 h6", "col col5 h6"]
+        var AttributesDataColumn = ["col1", "col2", "col3", "col4", "col5"]
+
+        for (i = 0; i < 5; i++) {
+          var th = document.createElement("th");
+          th.appendChild(document.createTextNode(HeadName[i]));
+          th.setAttribute("class", AttributesClass[i]);
+          th.setAttribute("data-column", AttributesDataColumn[i]);
+          headRow.appendChild(th);
+        }
+        thead.appendChild(headRow);
+        table.appendChild(thead);
+
+        var tBody = document.createElement("tbody");
+
+        var len = result.length;
+        for (var i = 0; i < len; i++) {
+
+          var tr = document.createElement("tr");
+          for (var j = 0; j < 5; j++) {
+            var td = document.createElement("td");
+
+            if (j == 0) {
+              td.appendChild(document.createTextNode(i + 1));
+              }
+
+              if (j == 1) {
+                td.appendChild(document.createTextNode(result[i].Iname));
+              }
+
+              if (j == 2) {
+                td.appendChild(document.createTextNode(result[i].Price));
+              }
+
+              if (j == 3) {
+                td.appendChild(document.createTextNode(result[i].State));
+              }
+
+              if (j == 4) {
+                var para = ["add", "edit", "delete"];
+                var icon = ["\uE03B", "\uE254", "\uE872"];
+
+                for (k = 0; k < 3; k++) {
+                  var a = document.createElement("a");
+                  a.setAttribute("class", para[k]);
+                  a.setAttribute("title", para[k].capitalize());
+                  a.setAttribute("data-toggle", "tooltip");
+
+                  var ii = document.createElement("i");
+                  // var special_sign = document.createTextNode("")
+                  // special_sign.innerHTML = icon[k] + special_sign.innerHTML;
+                  // ii.appendChild(special_sign.innerHTML);
+                  ii.appendChild(document.createTextNode(icon[k]))
+                  ii.setAttribute("class", "material-icons");
+
+                  a.appendChild(ii)
+                  td.appendChild(a)
+                }
+              }
+
+
+              td.setAttribute("class", AttributesClass[j]);
+              td.setAttribute("data-column", AttributesDataColumn[j]);
+              tr.appendChild(td);
+              console.log(tr);
+          }
+          tBody.appendChild(tr);
+        }
+        table.appendChild(tBody);
+        document.getElementById("table-wrapper").appendChild(table)
+
+
+
+
+
+
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log(textStatus, errorThrown);
+        alert(textStatus, errorThrown);
+      }
+    });
+  }
+
   $(document).on("click", ".add", function() {
     var empty = false;
     var input = $(this).parents("tr").find('input[type="text"]');
@@ -26,8 +130,7 @@ $(document).ready(function() {
     var typing_Price;
     var typing_State;
 
-    // console.log(input);
-    Check_all_input()
+    Check_all_input();
 
     function Check_all_input(callback) {
       input.each(function(i, value) {
@@ -45,36 +148,27 @@ $(document).ready(function() {
       input.each(function(i, value) {
         Check_empty_value($(this));
         if (i == 1) {
-          // input : 一個詞 string   ----->   檢索 items collection的 name欄位 ----> output : "exist"  "nonexist"
           Get_from_API($(this).val());
 
           function Get_from_API(typing_Iname, typing_Price, typing_State, callback) {
             $.ajax("http://34.226.147.247:3000/items", {
               type: 'GET',
               success: function(result) {
-                // alert(typing_Iname);
-                // alert(result[0].Iname);
-                // alert(result.length);
-                // var array_result = JSON.parse(result.toString());
                 var len = result.length;
                 // flag = 0; //To record whether typing_Iname matches the data from database or not
                 for (var i = 0; i < len; i++) {
-                  // alert(array_result[0][i].Ianme);
                   if (typing_Iname == result[i].Iname && typing_Price == result[i].Price && typing_State == result[i].State) {
                     flag = 1;
                     alert("Bingo");
                   }
                   if (typing_Iname == result[i].Iname && flag == 0) {
                     flag = 2;
-                    // alert(12);
                     Post_to_update(typing_Iname, typing_Price);
                   }
                 }
-                if (!flag) {
-                  // alert("Not match!");
+                if (!flag) { // alert("Not match!");
                   Post_to_insert();
                 }
-
               },
               error: function(jqXHR, textStatus, errorThrown) {
                 console.log(textStatus, errorThrown);
@@ -91,11 +185,9 @@ $(document).ready(function() {
           } else {
             cell.removeClass("error");
             data.push(cell.val())
-            // console.log(data)
           }
         }
       })
-      // callback();
     };
 
     function Post_to_insert() {
@@ -132,10 +224,6 @@ $(document).ready(function() {
           data: {
             Iname: typing_Iname,
             Price: parseInt(array_data[2])
-            // State: array_data[3]
-            // Iname: "123",
-            // Price: 123,
-            // State: "123"
           },
           success: function(data1) {
             alert(data1);
@@ -145,7 +233,6 @@ $(document).ready(function() {
         });
       }
     }
-
 
 
     $(this).parents("tr").find(".error").first().focus();
@@ -174,3 +261,8 @@ $(document).ready(function() {
     $(".add-new").removeAttr("disabled");
   });
 });
+
+
+String.prototype.capitalize = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+}

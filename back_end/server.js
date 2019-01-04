@@ -191,57 +191,6 @@ app.post('/customers', parseUrlencoded, function(request, response) {
 })
 
 
-// app.get('/packets/:src', function(request, response) {
-//   Packet.find({
-//     src: request.params.src
-//   }, function(err, result) {
-//     response.send(result);
-//   })
-// });
-//
-// app.get('/rssi', function(request, response) {
-//   var myQuery = {};
-//   if (request.query.src) {
-//     myQuery.src = request.query.src;
-//   }
-//   if (request.query.dest) {
-//     myQuery.dest = request.query.dest;
-//   }
-//
-//   Packet.find(myQuery, function(err, result) {
-//     var rssiList = result.map(function(packet) {
-//       // return packet.rssi;
-//       return [packet.rssi, new Date(packet.timestamp)];
-//     });
-//     response.send(rssiList);
-//   })
-// });
-//
-// app.get('/cmd', function(request, response) {
-//   Command.find({}, function(err, result) {
-//     response.send(result);
-//   })
-// });
-//
-// app.post('/cmd/:device', parseUrlencoded, function(request, response) {
-//   var jsonCMD = {
-//     dest: request.params.device,
-//     type: 2,
-//     cmd: request.body.command
-//   }
-//   console.log(request.body);
-//
-//   jsonCMD.timestamp = +new Date();
-//   newCMD = new Command(jsonCMD);
-//   newCMD.save(function(err) {
-//     if (!err) {
-//       response.send("Success!");
-//     } else {
-//       console.log(err);
-//     }
-//   });
-// })
-
 
 app.listen(3000, function(request, response) {
   console.log('Listening on port 3000!');
