@@ -2,15 +2,15 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var purchase = new Schema({
-  Cname: String,
-  Tot_price: Number,
-  Ori_price: Number,
-  Discount: Number,
-  Buy: {
-    Iname: [String],
-    Inum: [Number]
+  cname: String,
+  tot_price: Number,
+  ori_price: Number,
+  discount: Number,
+  buy: {
+    iname: [String],
+    inum: [Number]
   },
-  Timestamp: Number
+  timestamp: Number
 }, {
   versionKey: false
 });

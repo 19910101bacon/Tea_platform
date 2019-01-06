@@ -32,7 +32,7 @@ app.get('/items', function(request, response) {
 
 app.get('/items/shelf', function(request, response) {
   item.find(function(err, result) {
-    result_filter = result.filter(one_item => one_item['State'] == '上架')
+    result_filter = result.filter(one_item => one_item['state'] == '上架')
     response.send(result_filter);
     console.log(result_filter);
   })
@@ -40,13 +40,15 @@ app.get('/items/shelf', function(request, response) {
 
 app.post('/items', parseUrlencoded, function(request, response) {
   var json = {
-    Iname: request.body.Iname,
-    Price: request.body.Price,
-    State: request.body.State
+    iname: request.body.iname,
+    price: request.body.price,
+    state: request.body.state,
+    date: request.body.date,
+    unit: request.body.unit,
+    timestamp: new Date()
   }
-  // console.log(request.body);
 
-  json.Timestamp = +new Date();
+  // json.timestamp = +new Date();
   newjson = new item(json);
   newjson.save(function(err) {
     if (!err) {
@@ -58,11 +60,14 @@ app.post('/items', parseUrlencoded, function(request, response) {
 });
 
 app.put('/items/update', parseUrlencoded, function(request, response) {  item.update({
-    Iname: request.body.Iname,
-    State: "上架"
+    iname: request.body.iname_old,
+    unit: request.body.unit_old,
+    price: request.body.price_old,
+    date: request.body.date_old,
+    state: request.body.state_old
   }, {
     $set: {
-      State: "刪除"
+      state: "刪除"
     }
   }, function(err, result) {
     if (err)
@@ -70,12 +75,15 @@ app.put('/items/update', parseUrlencoded, function(request, response) {  item.up
     console.log(result);
 
     var json = {
-      Iname: request.body.Iname,
-      Price: request.body.Price,
-      State: "上架"
+      iname: request.body.iname,
+      unit: request.body.unit,
+      price: request.body.price,
+      date: request.body.date,
+      state: request.body.state,
+      timestamp: +new Date()
     }
 
-    json.Timestamp = +new Date();
+    // json.timestamp = +new Date();
     newjson = new item(json);
     newjson.save(function(err) {
       if (!err) {
@@ -88,11 +96,11 @@ app.put('/items/update', parseUrlencoded, function(request, response) {  item.up
 })
 
 app.delete('/items/delete', parseUrlencoded, function(request, response) {
-  item.remove({Iname: request.body.Iname})
+  item.remove({iname: request.body.iname})
     .then(note => {
       if (!note) {
         return response.status(404).send({
-          message: "Note not found with Iname " + request.body.Iname
+          message: "Note not found with iname " + request.body.iname
         });
       }
       response.send({
@@ -101,11 +109,11 @@ app.delete('/items/delete', parseUrlencoded, function(request, response) {
     }).catch(err => {
       if (err.kind === 'ObjectId' || err.name === 'NotFound') {
         return response.status(404).send({
-          message: "Note not found with id " + request.body.Iname
+          message: "Note not found with id " + request.body.iname
         });
       }
       return response.status(500).send({
-        message: "Could not delete note with Iname " + request.body.Iname
+        message: "Could not delete note with iname " + request.body.iname
       });
     });
 });
@@ -122,18 +130,18 @@ app.get('/purchases', function(request, response) {
 
 app.post('/purchases', parseUrlencoded, function(request, response) {
   var json = {
-    Cname: request.body.Cname,
-    Tot_price: request.body.Tot_price,
-    Ori_price: request.body.Ori_price,
-    Discount: request.body.Discount,
-    Buy: {
-      Iname: JSON.parse(request.body.Buy).Iname,
-      Inum: JSON.parse(request.body.Buy).Inum
+    cname: request.body.cname,
+    tot_price: request.body.tot_price,
+    ori_price: request.body.ori_price,
+    discount: request.body.discount,
+    buy: {
+      iname: JSON.parse(request.body.buy).iname,
+      inum: JSON.parse(request.body.buy).inum
     }
   }
   console.log(request.body);
 
-  json.Timestamp = +new Date();
+  json.timestamp = +new Date();
   newjson = new purchase(json);
   newjson.save(function(err) {
     if (!err) {
@@ -153,16 +161,16 @@ app.get('/customers', function(request, response) {
 
 app.post('/customers', parseUrlencoded, function(request, response) {
   var json = {
-    Cname: request.body.Cname,
-    Phone: request.body.Phone
+    cname: request.body.cname,
+    phone: request.body.phone
   }
   console.log(request.body);
 
-  json.Timestamp = +new Date();
+  json.timestamp = +new Date();
   newjson = new customer(json);
 
   customer.find({
-    Phone: request.body.Phone
+    phone: request.body.phone
   }, function(err, result) {
     // response.send(result);
     if (!result) {
@@ -175,10 +183,10 @@ app.post('/customers', parseUrlencoded, function(request, response) {
       });
     } else {
       customer.find({
-        Phone: request.body.Phone
+        phone: request.body.phone
       }).remove().exec();
       // console.log(123);
-      newjson.Cname = request.body.Cname;
+      newjson.cname = request.body.cname;
       newjson.save(function(err) {
         if (!err) {
           response.send("Success!");

@@ -2,10 +2,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var item = new Schema({
-  Iname: String,
-  Price: Number,
-  State: String,
-  Timestamp: Number
+  iname: String,
+  unit: String,
+  price: Number,
+  state: String,
+  date: String,
+  timestamp: Number
 }, {
   versionKey: false
 });
