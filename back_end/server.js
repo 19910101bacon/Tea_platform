@@ -5,6 +5,7 @@ var app = express();
 var item = require('./model/Item');
 var purchase = require('./model/Purchase');
 var customer = require('./model/Customer');
+var stock = require('./model/Stock');
 var bodyParser = require('body-parser');
 var parseUrlencoded = bodyParser.urlencoded({
   extended: false
@@ -32,11 +33,20 @@ app.get('/items', function(request, response) {
 
 app.get('/items/shelf', function(request, response) {
   item.find(function(err, result) {
-    result_filter = result.filter(one_item => one_item['state'] == '上架')
+    result_filter = result.filter(one_item => one_item['state'] !== '刪除')
     response.send(result_filter);
     console.log(result_filter);
   })
 });
+
+app.get('/stock/shelf', function(request, response) {
+  stock.find(function(err, result) {
+    result_filter = result.filter(one_item => one_item['stock_state'] == '有庫存')
+    response.send(result_filter);
+    console.log(result_filter);
+  })
+});
+
 
 app.post('/items', parseUrlencoded, function(request, response) {
   var json = {
@@ -94,6 +104,41 @@ app.put('/items/update', parseUrlencoded, function(request, response) {  item.up
     });
   });
 })
+
+app.put('/stock/update', parseUrlencoded, function(request, response) {  stock.update({
+    iname: request.body.iname_old,
+    amount: request.body.amount_old,
+    stock_state: request.body.stock_state_old,
+    date: request.body.date_old
+  }, {
+    $set: {
+      stock_state: "刪除"
+    }
+  }, function(err, result) {
+    if (err)
+      console.log(err);
+    console.log(result);
+
+    var json = {
+      iname: request.body.iname,
+      amount: request.body.amount,
+      stock_state: request.body.stock_state,
+      date: request.body.date,
+      timestamp: +new Date()
+    }
+
+    // json.timestamp = +new Date();
+    newjson = new stock(json);
+    newjson.save(function(err) {
+      if (!err) {
+        response.send("Success!");
+      } else {
+        console.log(err);
+      }
+    });
+  });
+})
+
 
 app.delete('/items/delete', parseUrlencoded, function(request, response) {
   item.remove({iname: request.body.iname})
