@@ -1,9 +1,14 @@
 $(document).ready(function() {
-  // load data from MongoDB
-  Get_items_data()
-  Display_select_data()
 
+  Get_items_data();
+  Display_select_data();
+  Save_data();
 
+  // refresh document
+  $('#Modal').on('show.bs.modal', function(e) {
+    document.getElementById("unit").value = "";
+    document.getElementById("price").value = "";
+  });
 
 })
 
@@ -30,7 +35,7 @@ function Display_select_data() {
 
       select_form.addEventListener('change', function() {
         var former_date = document.getElementById("date");
-        if(former_date){
+        if (former_date) {
           document.getElementById("date-form").removeChild(former_date);
         }
 
@@ -64,9 +69,36 @@ function Display_select_data() {
   });
 }
 
-function Save_data(){
-  
+// $("a[data-target=#Modal]").click(function(ev) {
+//   ev.preventDefault();
+//   var target = $(this).attr("href");
+//
+//   // load the url and show modal on success
+//   $("#Modal .modal-body").load(target, function() {
+//     $("#myModal").modal("show");
+//   });
+// });
+
+
+function Save_data() {
+  $(document).on("click", "#save", function() {
+
+    var a = document.forms["Form"]["answer3"].value;
+    var b = document.forms["Form"]["answer4"].value;
+
+    console.log(a);
+    console.log(b);
+
+    if (a == null || a == "", b == null || b == "") {
+      alert("Please Fill All Required Field");
+      return false;
+    }
+
+
+  });
 }
+
+
 
 function Get_items_data() {
   $.ajax("http://34.226.147.247:3000/items/shelf", {

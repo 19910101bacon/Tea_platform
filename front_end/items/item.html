@@ -88,7 +88,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form method="post" name="Form" onsubmit="return Save_data()" action="">
             <div class="form-group row" id="iname-form">
               <label for="iname" class="col-sm-3 col-form-label">商品名稱</label>
               <!-- <select id="iname" class="col-sm-7">
@@ -108,14 +108,14 @@
             <div class="form-group row">
               <label for="unit" class="col-sm-3 col-form-label">單位</label>
               <div class="col-sm-7">
-                <input type="text" class="form-control" id="unit" placeholder="半斤">
+                <input type="text" class="form-control" id="unit" name="answer3" placeholder="半斤">
               </div>
             </div>
 
             <div class="form-group row">
               <label for="unit" class="col-sm-3 col-form-label">價錢</label>
               <div class="col-sm-7">
-                <input type="text" class="form-control" id="unit" placeholder="500">
+                <input type="text" class="form-control" id="price" name="answer4" placeholder="500">
               </div>
             </div>
 
@@ -131,7 +131,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-          <button type="button" class="btn btn-primary">儲存</button>
+          <button type="button" class="btn btn-primary" id="save">儲存</button>
         </div>
       </div>
     </div>

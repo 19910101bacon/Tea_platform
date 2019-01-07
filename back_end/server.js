@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/Tea_platform');
+mongoose.connect('mongodb://localhost/Tea_platform', {useNewUrlParser: true});
 var express = require('express');
 var app = express();
 var item = require('./model/Item');
@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var parseUrlencoded = bodyParser.urlencoded({
   extended: false
 });
+
 
 app.all('*', function(req, res, next) { //TO fix the CORS bug
   res.header('Access-Control-Allow-Origin', '*');
