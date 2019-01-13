@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/Tea_platform', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost/Tea_platform', {
+  useNewUrlParser: true
+});
 var express = require('express');
 var app = express();
 var item = require('./model/Item');
@@ -40,7 +42,7 @@ app.get('/items/shelf', function(request, response) {
   })
 });
 
-app.get('/stock/shelf', function(request, response) {
+app.get('/stocks/shelf', function(request, response) {
   stock.find(function(err, result) {
     result_filter = result.filter(one_item => one_item['stock_state'] == '有庫存')
     response.send(result_filter);
@@ -70,7 +72,8 @@ app.post('/items', parseUrlencoded, function(request, response) {
   });
 });
 
-app.put('/items/update', parseUrlencoded, function(request, response) {  item.update({
+app.put('/items/update', parseUrlencoded, function(request, response) {
+  item.update({
     iname: request.body.iname_old,
     unit: request.body.unit_old,
     price: request.body.price_old,
@@ -106,9 +109,11 @@ app.put('/items/update', parseUrlencoded, function(request, response) {  item.up
   });
 })
 
-app.put('/stock/update', parseUrlencoded, function(request, response) {  stock.update({
+app.put('/stock/update', parseUrlencoded, function(request, response) {
+  stock.update({
     iname: request.body.iname_old,
     amount: request.body.amount_old,
+    money:  request.body.money_old,
     stock_state: request.body.stock_state_old,
     date: request.body.date_old
   }, {
@@ -124,6 +129,7 @@ app.put('/stock/update', parseUrlencoded, function(request, response) {  stock.u
       iname: request.body.iname,
       amount: request.body.amount,
       stock_state: request.body.stock_state,
+      money:  request.body.money,
       date: request.body.date,
       timestamp: +new Date()
     }
@@ -140,29 +146,35 @@ app.put('/stock/update', parseUrlencoded, function(request, response) {  stock.u
   });
 })
 
-
-app.delete('/items/delete', parseUrlencoded, function(request, response) {
-  item.remove({iname: request.body.iname})
-    .then(note => {
-      if (!note) {
-        return response.status(404).send({
-          message: "Note not found with iname " + request.body.iname
-        });
-      }
-      response.send({
-        message: "Note deleted successfully!"
-      });
-    }).catch(err => {
-      if (err.kind === 'ObjectId' || err.name === 'NotFound') {
-        return response.status(404).send({
-          message: "Note not found with id " + request.body.iname
-        });
-      }
-      return response.status(500).send({
-        message: "Could not delete note with iname " + request.body.iname
-      });
-    });
-});
+//
+// app.delete('/items/delete', parseUrlencoded, function(request, response)
+//   item.remove({
+//       // 'iname': request.body.iname,
+//       'date': request.body.date
+//       // 'unit': request.body.unit,
+//       // price: request.body.price
+//       // 'state': request.body.state
+//     })
+//     // .then(note => {
+//     //   if (!note) {
+//     //     return response.status(404).send({
+//     //       message: "Note not found with iname " + request.body.iname
+//     //     });
+//     //   }
+//     //   response.send({
+//     //     message: "Note deleted successfully!"
+//     //   });
+//     // }).catch(err => {
+//     //   if (err.kind === 'ObjectId' || err.name === 'NotFound') {
+//     //     return response.status(404).send({
+//     //       message: "Note not found with id " + request.body.iname
+//     //     });
+//     //   }
+//     //   return response.status(500).send({
+//     //     message: "Could not delete note with iname " + request.body.iname
+//     //   });
+//     // });
+// });
 
 
 

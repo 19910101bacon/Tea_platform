@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var stock = new Schema({
   iname: String,
   amount: Number,
+  money: Number,
   stock_state: String,
   date: String,
   timestamp: Number

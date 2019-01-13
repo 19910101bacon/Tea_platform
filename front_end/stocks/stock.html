@@ -40,7 +40,7 @@
   <!-- <script type="text/javascript" src="jquery.js"></script> -->
   <!-- <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/lib/jquery.js"></script> -->
   <!-- <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script> -->
-  <script src="../js/javascript_item.js"></script>
+  <script src="../js/javascript_stock.js"></script>
   <script src="../js/javascript_style.js"></script>
 
 
@@ -63,11 +63,11 @@
       <div class="table-title">
         <div class="row">
           <div class="col-sm-8">
-            <h2 style="font-size:40px">茶葉商品 <b>細項</b></h2>
+            <h2 style="font-size:40px">茶葉庫存 <b>細項</b></h2>
           </div>
 
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal" style="font-size:35px">
-            新增品項
+            新增庫存
           </button>
 
         </div>
@@ -86,7 +86,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">新增品項</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">新增庫存</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -95,21 +95,27 @@
           <form method="post" name="Form" onsubmit="return Save_data()" action="">
             <div class="form-group row" id="iname-form">
               <label for="iname" class="col-sm-3 col-form-label">商品名稱</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="iname" name="answer1" placeholder="大禹嶺">
+              </div>
             </div>
 
             <div class="form-group row" id="date-form">
               <label for="date" class="col-sm-3 col-form-label">進貨日期</label>
-            </div>
-
-            <div class="form-group row">
-              <label for="unit" class="col-sm-3 col-form-label">單位</label>
               <div class="col-sm-7">
-                <input type="text" class="form-control" id="unit" name="answer3" placeholder="半斤">
+                <input type="text" class="form-control" id="money" name="answer2" placeholder="2019/01/01">
               </div>
             </div>
 
             <div class="form-group row">
-              <label for="unit" class="col-sm-3 col-form-label">價錢</label>
+              <label for="unit" class="col-sm-3 col-form-label">進購量(斤)</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="amount" name="answer3" placeholder="30">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="unit" class="col-sm-3 col-form-label">進貨購價</label>
               <div class="col-sm-7">
                 <input type="text" class="form-control" id="price" name="answer4" placeholder="500">
               </div>
@@ -118,8 +124,8 @@
             <div class="form-group row">
               <label for="state" class="col-sm-3 col-form-label">狀態</label>
               <select id="state" class="col-sm-7" name="answer5">
-                <option id="shelf">上架</option>
-                <option id=>下架</option>
+                <option id="shelf">有庫存</option>
+                <option id=>沒庫存</option>
               </select>
             </div>
 

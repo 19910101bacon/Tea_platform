@@ -5,27 +5,24 @@ $(document).ready(function() {
   window.ans4_old = null;
   window.ans5_old = null;
 
-  Get_items_data();
-  Display_select_data();
-  Save_data($("#iname").val(), $("#date").val());
-  Edit_data();
+  Get_stocks_data();
   Delete_data();
+  Save_data();
+
+
+  // Display_select_data();
+  // Edit_data();
   // refresh document
   $('#Modal').on('show.bs.modal', function(e) {
-    document.getElementById("unit").value = "";
-    document.getElementById("price").value = "";
+    document.getElementById("iname").value = "";
+    document.getElementById("date").value = "";
+    document.getElementById("amount").value = "";
+    document.getElementById("money").value = "";
   });
-
-  // $('#save').click(function() {
-  //   location.reload();
-  // });
-
-
-
 })
 
 
-function Edit_data() {
+// function Edit_data() {
   $.ajax("http://34.226.147.247:3000/stock/shelf", {
     type: 'GET',
     success: function(result) {
@@ -109,7 +106,7 @@ function Edit_data() {
   })
 }
 
-function Display_select_data() {
+// function Display_select_data() {
   $.ajax("http://34.226.147.247:3000/stock/shelf", {
     type: 'GET',
     success: function(result) {
@@ -167,42 +164,41 @@ function Display_select_data() {
   });
 }
 
+// ok
 function Save_data() {
   $(document).on("click", "#save", function() {
-    console.log(ans1_old)
-    console.log(ans2_old)
+    var ans1 = document.forms["Form"]["answer1"].value;
+    var ans2 = document.forms["Form"]["answer2"].value;
     var ans3 = document.forms["Form"]["answer3"].value;
     var ans4 = document.forms["Form"]["answer4"].value;
 
-    if (ans3 == null || ans3 == "") {
-      alert("請填寫單位，如『半斤』");
+    if (ans1 == null || ans3 == "") {
+      alert("請填寫商品名稱，如『大禹嶺』");
+      return false;
+    }
+    if (ans2 == null || ans2 == "") {
+      alert("請填寫進貨日期，如『2019/01/01』");
+      return false;
+    }
+    if (ans3 == null || ans3 == "" || || !Number.isInteger(Number(ans3))) {
+      alert("請填寫進貨量，並填寫數字，如30");
       return false;
     }
     if (ans4 == null || ans4 == "" || !Number.isInteger(Number(ans4))) {
       alert("請填寫價錢，並填寫數字");
       return false;
     }
-    if (document.getElementById("date") == null) {
-      alert("請透過點選『商品名稱』來選擇『進貨日期』")
-    } else {
-      var ans2 = document.forms["Form"]["answer2"].value;
-      var ans1 = document.forms["Form"]["answer1"].value;
-      var ans5 = document.forms["Form"]["answer5"].value;
-    }
+    var ans5 = document.forms["Form"]["answer5"].value;
 
     $.ajax({
       type: 'GET',
-      url: 'http://34.226.147.247:3000/items/shelf',
+      url: 'http://34.226.147.247:3000/stocks/shelf',
       success: function(result) {
         var len = result.length;
         var flag = 0;
         // flag = 0; //To record whether typing_Iname matches the data from database or not
-        for (var i = 0; i < len; i++) {
-          if (result[i].iname == ans1_old && result[i].date == ans2_old && result[i].unit == ans3_old) {
-            continue;
-          }
 
-          if (result[i].iname == ans1 && result[i].date == ans2 && result[i].unit == ans3) {
+          if (result[i].iname == ans1_old && result[i].date == ans2_old) {
             alert('此產品已在表單中，若要編輯該品項請去該項目編輯')
             flag = flag + 1
           }
@@ -211,17 +207,17 @@ function Save_data() {
         if (flag == 0) {
           $.ajax({
             type: 'PUT',
-            url: 'http://34.226.147.247:3000/items/update',
+            url: 'http://34.226.147.247:3000/stocks/update',
             data: {
               iname_old: ans1_old,
               date_old: ans2_old,
-              unit_old: ans3_old,
-              price_old: ans4_old,
+              amount_old: ans3_old,
+              money_old: ans4_old,
               state_old: ans5_old,
               iname: ans1,
               date: ans2,
-              unit: ans3,
-              price: ans4,
+              amount: ans3,
+              money: ans4,
               state: ans5
             },
             success: function() {
@@ -247,8 +243,9 @@ function Save_data() {
   });
 }
 
-function Get_items_data() {
-  $.ajax("http://34.226.147.247:3000/items/shelf", {
+// ok
+function Get_stocks_data() {
+  $.ajax("http://34.226.147.247:3000/stocks/shelf", {
     type: 'GET',
     success: function(result) {
       // Create table
@@ -259,7 +256,7 @@ function Get_items_data() {
       var tbody = document.createElement("tbody");
       var headRow = document.createElement("tr");
 
-      var HeadName = ["商品編號", "商品名稱", "進貨日期", "單位", "價錢", "狀態", "行為"]
+      var HeadName = ["商品編號", "庫存名稱", "進貨日期", "進貨量", "進貨成本", "狀態", "行為"]
       var AttributesClass = ["col col1 h6", "col col2 h6", "col col3 h6", "col col4 h6", "col col5 h6", "col col6 h6", "col col7 h6"]
       var AttributesDataColumn = ["col1", "col2", "col3", "col4", "col5", "col6", "col7"]
 
@@ -308,18 +305,14 @@ function Get_items_data() {
           }
 
           if (j == 6) {
-            var para = ["edit", "delete"];
-            var icon = ["\uE254", "\uE872"];
+            var para = ["delete"];
+            var icon = ["\uE872"];
 
-            for (k = 0; k < 2; k++) {
+            for (k = 0; k < 1; k++) {
               var but = document.createElement("button");
               but.setAttribute("class", para[k]);
               but.setAttribute("class", "h3");
               but.setAttribute("type", "button");
-              if (k == 0) {
-                but.setAttribute("data-toggle", "modal");
-                but.setAttribute("data-target", "#Modal");
-              }
 
               var ii = document.createElement("i");
               // var special_sign = document.createTextNode("")
@@ -366,7 +359,7 @@ function GetUnique(inputArray) {
   return outputArray;
 }
 
-
+// ok
 function Delete_data() {
   $(document).on("click", ".delete", function() {
         $(document).on("click", ".edit", function() {
@@ -380,11 +373,11 @@ function Delete_data() {
 
     $.ajax({
       type: 'PUT',
-      url: 'http://34.226.147.247:3000/items/update',
+      url: 'http://34.226.147.247:3000/stocks/update',
       data: {
         iname_old: ans1_old,
         date_old: ans2_old,
-        unit_old: ans3_old,
+        amount_old: ans3_old,
         price_old: ans4_old,
         state_old: ans5_old,
         iname: '',
