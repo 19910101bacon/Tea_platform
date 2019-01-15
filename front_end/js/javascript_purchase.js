@@ -1,4 +1,5 @@
 $(document).ready(function() {
+<<<<<<< HEAD
 
   Display_stock_data()
 
@@ -53,6 +54,9 @@ $(document).ready(function() {
   $('.form-control-chosen').chosen({
     // Chosen options here
   });
+=======
+  Display_stocks_data()
+>>>>>>> 046fc41dc981bc54a968f5e33b9434d356d08833
 
   // 處理消費者按鈕
   $(document).on("click", "#customer-confirm", function() {
@@ -72,11 +76,18 @@ $(document).ready(function() {
     // input telephone name -> 去 customers collection 的 name 和 telephone欄位做比較 -> output "new" "old"
 
   });
+<<<<<<< HEAD
 });
 
 
 
 function Display_stock_data() {
+=======
+})
+
+
+function Display_stocks_data() {
+>>>>>>> 046fc41dc981bc54a968f5e33b9434d356d08833
   $.ajax("http://34.226.147.247:3000/stocks/shelf", {
     type: 'GET',
     success: function(result) {
@@ -86,6 +97,7 @@ function Display_stock_data() {
       }
 
       var iname_set = GetUnique(iname)
+<<<<<<< HEAD
 
       var select_form = document.createElement("select");
       select_form.setAttribute("data-placeholder", "請選擇購買商品，可複選");
@@ -105,6 +117,46 @@ function Display_stock_data() {
 
       document.getElementById('output').innerHTML = location.search;
       $(".chosen-select").chosen();
+=======
+      var select_form = document.createElement("select");
+      select_form.setAttribute("data-placeholder", "高山青茶")
+      select_form.setAttribute("class", "chosen-select");
+      select_form.setAttribute("tabindex", "4");
+      select_form.setAttribute("multiple", "multiple");
+
+      for (j = 0; j < iname_set.length; j++) {
+        var opt = document.createElement("option");
+        opt.setAttribute("value", iname_set[j])
+        opt.setAttribute("class", "h3")
+        opt.appendChild(document.createTextNode(iname_set[j]));
+        select_form.appendChild(opt)
+      }
+      document.getElementById("stocks-form").appendChild(select_form);
+
+
+      var script1 = document.createElement("script")
+      script1.setAttribute("src", "../css/chosen_v1.8.7/docsupport/jquery-3.2.1.min.js")
+      script1.setAttribute("type", "text/javascript")
+      document.getElementById("stocks-form").appendChild(script1);
+
+      var script2 = document.createElement("script")
+      script2.setAttribute("src", "../css/chosen_v1.8.7/chosen.jquery.js")
+      script2.setAttribute("type", "text/javascript")
+      document.getElementById("stocks-form").appendChild(script2);
+
+      var script3 = document.createElement("script")
+      script3.setAttribute("src", "../css/chosen_v1.8.7/docsupport/prism.js")
+      script3.setAttribute("type", "text/javascript")
+      document.getElementById("stocks-form").appendChild(script3);
+
+      var script4 = document.createElement("script")
+      script4.setAttribute("src", "../css/chosen_v1.8.7/docsupport/init.js")
+      script4.setAttribute("type", "text/javascript")
+      document.getElementById("stocks-form").appendChild(script4);
+
+      console.log('hello')
+
+>>>>>>> 046fc41dc981bc54a968f5e33b9434d356d08833
 
     },
     error: function(jqXHR, textStatus, errorThrown) {

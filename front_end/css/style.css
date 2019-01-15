@@ -129,39 +129,3 @@ table.table td .add {
 #customer-confirm {
   border-style: solid;
 }
-
-.form {
-
-	// Reset default Chosen.js styles
-	.chosen-container {
-		font-size: rem(16);
-
-		// Remove borders and box-shadows
-		.chosen-single,
-		.chosen-drop {
-			border: none;
-			border-radius: 0;
-			box-shadow: none;
-		}
-	}
-
-	// Reset active styles
-	.chosen-container-active {
-
-		// Remove borders and box-shadows
-		&.chosen-with-drop .chosen-single,
-		.chosen-choices {
-			border: none;
-			border-radius: 0;
-			box-shadow: none;
-		}
-
-		.chosen-results {
-
-			// Remove gradient and set the highlight color
-			.highlighted {
-				background: $color-blue;
-			}
-		}
-	}
-}
