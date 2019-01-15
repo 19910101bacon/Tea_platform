@@ -22,8 +22,8 @@ $(document).ready(function() {
 })
 
 
-// function Edit_data() {
-  $.ajax("http://34.226.147.247:3000/stock/shelf", {
+function Edit_data() {
+  $.ajax("http://34.226.147.247:3000/stocks/shelf", {
     type: 'GET',
     success: function(result) {
       $(document).on("click", ".edit", function() {
@@ -87,14 +87,14 @@ $(document).ready(function() {
         document.getElementById("date-form").appendChild(select_form);
 
         // ans3
-        document.getElementById("unit").value = ans3_old;
+        document.getElementById("amount").value = ans3_old;
 
         // ans4
-        document.getElementById("price").value = ans4_old;
+        document.getElementById("money").value = ans4_old;
 
         // ans5
         if (ans5_old == "下架") {
-          document.getElementById("state").selectedIndex = "1";
+          document.getElementById("stock_state").selectedIndex = "1";
         }
       })
     },
@@ -106,7 +106,7 @@ $(document).ready(function() {
   })
 }
 
-// function Display_select_data() {
+function Display_select_data() {
   $.ajax("http://34.226.147.247:3000/stock/shelf", {
     type: 'GET',
     success: function(result) {
@@ -180,7 +180,7 @@ function Save_data() {
       alert("請填寫進貨日期，如『2019/01/01』");
       return false;
     }
-    if (ans3 == null || ans3 == "" || || !Number.isInteger(Number(ans3))) {
+    if (ans3 == null || ans3 == "" || !Number.isInteger(Number(ans3))) {
       alert("請填寫進貨量，並填寫數字，如30");
       return false;
     }
@@ -197,28 +197,29 @@ function Save_data() {
         var len = result.length;
         var flag = 0;
         // flag = 0; //To record whether typing_Iname matches the data from database or not
-
+        for (var i = 0; i < len; i++) {
           if (result[i].iname == ans1_old && result[i].date == ans2_old) {
             alert('此產品已在表單中，若要編輯該品項請去該項目編輯')
             flag = flag + 1
           }
         }
 
+
         if (flag == 0) {
           $.ajax({
             type: 'PUT',
-            url: 'http://34.226.147.247:3000/stocks/update',
+            url: 'http://34.226.147.247:3000/stock/update',
             data: {
               iname_old: ans1_old,
               date_old: ans2_old,
               amount_old: ans3_old,
               money_old: ans4_old,
-              state_old: ans5_old,
+              stock_state_old: ans5_old,
               iname: ans1,
               date: ans2,
               amount: ans3,
               money: ans4,
-              state: ans5
+              stock_state: ans5
             },
             success: function() {
               console.log("update success")
@@ -257,14 +258,13 @@ function Get_stocks_data() {
       var headRow = document.createElement("tr");
 
       var HeadName = ["商品編號", "庫存名稱", "進貨日期", "進貨量", "進貨成本", "狀態", "行為"]
-      var AttributesClass = ["col col1 h6", "col col2 h6", "col col3 h6", "col col4 h6", "col col5 h6", "col col6 h6", "col col7 h6"]
+      var AttributesClass = ["col col1", "col col2", "col col3", "col col4", "col col5", "col col6", "col col7"]
       var AttributesDataColumn = ["col1", "col2", "col3", "col4", "col5", "col6", "col7"]
 
       for (i = 0; i < 7; i++) {
         var th = document.createElement("th");
         th.appendChild(document.createTextNode(HeadName[i]));
-        th.setAttribute("class", AttributesClass[i]);
-        th.setAttribute("class", "h2");
+        th.setAttribute("class", "h2 " + AttributesClass[i]);
         th.setAttribute("data-column", AttributesDataColumn[i]);
         headRow.appendChild(th);
       }
@@ -293,15 +293,15 @@ function Get_stocks_data() {
           }
 
           if (j == 3) {
-            td.appendChild(document.createTextNode(result[i].unit));
+            td.appendChild(document.createTextNode(result[i].amount));
           }
 
           if (j == 4) {
-            td.appendChild(document.createTextNode(result[i].price));
+            td.appendChild(document.createTextNode(result[i].money));
           }
 
           if (j == 5) {
-            td.appendChild(document.createTextNode(result[i].state));
+            td.appendChild(document.createTextNode(result[i].stock_state));
           }
 
           if (j == 6) {
@@ -310,8 +310,7 @@ function Get_stocks_data() {
 
             for (k = 0; k < 1; k++) {
               var but = document.createElement("button");
-              but.setAttribute("class", para[k]);
-              but.setAttribute("class", "h3");
+              but.setAttribute("class", "h3 delete");
               but.setAttribute("type", "button");
 
               var ii = document.createElement("i");
@@ -327,8 +326,7 @@ function Get_stocks_data() {
           }
 
 
-          td.setAttribute("class", AttributesClass[j]);
-          td.setAttribute("class", "h3");
+          td.setAttribute("class", "h3 " + AttributesClass[j]);
           td.setAttribute("data-column", AttributesDataColumn[j]);
           tr.appendChild(td);
         }
@@ -362,29 +360,32 @@ function GetUnique(inputArray) {
 // ok
 function Delete_data() {
   $(document).on("click", ".delete", function() {
-        $(document).on("click", ".edit", function() {
-          var tr_handle = $(this).closest('tr')
-          ans1_old = tr_handle.find(".col2").text()
-          ans2_old = tr_handle.find(".col3").text()
-          ans3_old = tr_handle.find(".col4").text()
-          ans4_old = tr_handle.find(".col5").text()
-          ans5_old = tr_handle.find(".col6").text()
-        })
+      var tr_handle = $(this).closest('tr')
+      ans1_old = tr_handle.find(".col2").text()
+      ans2_old = tr_handle.find(".col3").text()
+      ans3_old = tr_handle.find(".col4").text()
+      ans4_old = tr_handle.find(".col5").text()
+      ans5_old = tr_handle.find(".col6").text()
+      console.log(ans1_old)
+      console.log(ans2_old)
+      console.log(ans3_old)
+      console.log(ans4_old)
+      console.log(ans5_old)
 
     $.ajax({
       type: 'PUT',
-      url: 'http://34.226.147.247:3000/stocks/update',
+      url: 'http://34.226.147.247:3000/stock/update',
       data: {
         iname_old: ans1_old,
         date_old: ans2_old,
         amount_old: ans3_old,
-        price_old: ans4_old,
-        state_old: ans5_old,
+        money_old: ans4_old,
+        stock_state_old: ans5_old,
         iname: '',
         date: '',
-        unit: '',
-        price: 999,
-        state: '刪除'
+        amount: '',
+        money: 999,
+        stock_state: '刪除'
       },
       success: function() {
         console.log("update success")

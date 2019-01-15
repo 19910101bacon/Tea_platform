@@ -1,6 +1,58 @@
 $(document).ready(function() {
 
-  document.getElementById("Add").addEventListener("click", add_purchase_data);
+  Display_stock_data()
+
+
+  /**
+   * Chosen: Multiple Dropdown
+   */
+  window.WDS_Chosen_Multiple_Dropdown = {};
+  (function(window, $, that) {
+
+    // Constructor.
+    that.init = function() {
+      that.cache();
+
+      if (that.meetsRequirements) {
+        that.bindEvents();
+      }
+    };
+
+    // Cache all the things.
+    that.cache = function() {
+      that.$c = {
+        window: $(window),
+        theDropdown: $('.dropdown'),
+      };
+    };
+
+    // Combine all events.
+    that.bindEvents = function() {
+      that.$c.window.on('load', that.applyChosen);
+    };
+
+    // Do we meet the requirements?
+    that.meetsRequirements = function() {
+      return that.$c.theDropdown.length;
+    };
+
+    // Apply the Chosen.js library to a dropdown.
+    // https://harvesthq.github.io/chosen/options.html
+    that.applyChosen = function() {
+      that.$c.theDropdown.chosen({
+        inherit_select_classes: true,
+        width: '300px',
+      });
+    };
+
+    // Engage!
+    $(that.init);
+
+  })(window, jQuery, window.WDS_Chosen_Multiple_Dropdown);
+
+  $('.form-control-chosen').chosen({
+    // Chosen options here
+  });
 
   // 處理消費者按鈕
   $(document).on("click", "#customer-confirm", function() {
@@ -20,43 +72,54 @@ $(document).ready(function() {
     // input telephone name -> 去 customers collection 的 name 和 telephone欄位做比較 -> output "new" "old"
 
   });
-
-
-  // 處理『送出』的按鈕
-  $(document).on("click", "#Save", function() {
-    // if empty == 'false'{
-    //   alert('請確認消費者電話填寫正確')
-    // }
-    iname = [];
-    amount = [];
-    var x = document.querySelectorAll( 'body #amount' )
-    for(i=1; i <= x.length; i++){
-      amount.push(x[i-1].value);
-    }
-
-    var x = document.querySelectorAll( 'body #Iname' )
-    for(i=1; i <= x.length; i++){
-      iname.push(x[i-1].value);
-    }
-
-    telephone = document.getElementById("inputtellphoneinline").value
-    money = document.getElementById("inputmoney").value
-
-    console.log(iname)
-    console.log(amount)
-
-    // input telephone, iname, amount, money  ->     -> 購買項目原價錢  折扣
-
-  });
-
-
 });
 
 
 
-var add_purchase_data = function() {
-  var original = document.getElementById('container');
-  var clone = original.cloneNode(true); // "deep" clone
-  clone.id = "container" + 1; // there can only be one element with an ID
-  original.parentNode.appendChild(clone);
-};
+function Display_stock_data() {
+  $.ajax("http://34.226.147.247:3000/stocks/shelf", {
+    type: 'GET',
+    success: function(result) {
+      var iname = [];
+      for (i = 0; i < result.length; i++) {
+        iname.push(result[i].iname)
+      }
+
+      var iname_set = GetUnique(iname)
+
+      var select_form = document.createElement("select");
+      select_form.setAttribute("data-placeholder", "請選擇購買商品，可複選");
+      select_form.setAttribute("name", "tags[]");
+      select_form.setAttribute("class", "chosen-select");
+      select_form.setAttribute("multiple", "multiple");
+
+
+      for (j = 0; j < iname_set.length; j++) {
+        var opt = document.createElement("option");
+        opt.setAttribute("value", iname_set[j])
+        opt.appendChild(document.createTextNode(iname_set[j]));
+        select_form.appendChild(opt)
+        console.log(select_form)
+      }
+      document.getElementById("stock-form").appendChild(select_form);
+
+      document.getElementById('output').innerHTML = location.search;
+      $(".chosen-select").chosen();
+
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.log(textStatus, errorThrown);
+      alert(textStatus, errorThrown);
+    }
+  });
+}
+
+function GetUnique(inputArray) {
+  var outputArray = [];
+  for (var i = 0; i < inputArray.length; i++) {
+    if ((jQuery.inArray(inputArray[i], outputArray)) == -1) {
+      outputArray.push(inputArray[i]);
+    }
+  }
+  return outputArray;
+}

@@ -26,7 +26,7 @@ $(document).ready(function() {
 
 
 function Edit_data() {
-  $.ajax("http://34.226.147.247:3000/stock/shelf", {
+  $.ajax("http://34.226.147.247:3000/stocks/shelf", {
     type: 'GET',
     success: function(result) {
       $(document).on("click", ".edit", function() {
@@ -110,7 +110,7 @@ function Edit_data() {
 }
 
 function Display_select_data() {
-  $.ajax("http://34.226.147.247:3000/stock/shelf", {
+  $.ajax("http://34.226.147.247:3000/stocks/shelf", {
     type: 'GET',
     success: function(result) {
       var iname = [];
