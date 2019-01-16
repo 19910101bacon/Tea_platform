@@ -366,11 +366,6 @@ function Delete_data() {
       ans3_old = tr_handle.find(".col4").text()
       ans4_old = tr_handle.find(".col5").text()
       ans5_old = tr_handle.find(".col6").text()
-      console.log(ans1_old)
-      console.log(ans2_old)
-      console.log(ans3_old)
-      console.log(ans4_old)
-      console.log(ans5_old)
 
     $.ajax({
       type: 'PUT',
@@ -394,5 +389,28 @@ function Delete_data() {
       contentType: "application/x-www-form-urlencoded",
       dataType: "Text"
     });
+
+    $.ajax({
+      type: 'PUT',
+      url: 'http://34.226.147.247:3000/items/update_afterstock',
+      data: {
+        iname_old: ans1_old,
+        date_old: ans2_old,
+        iname: '',
+        date: '',
+        unit: '',
+        price: 999,
+        state: '刪除'
+      },
+      success: function() {
+        console.log("update success")
+        $(".hint_hint").empty();
+        $(".hint_hint").removeClass("hint")
+        HINT("已刪除，請重新整理")
+      },
+      contentType: "application/x-www-form-urlencoded",
+      dataType: "Text"
+    });
+
   })
 }

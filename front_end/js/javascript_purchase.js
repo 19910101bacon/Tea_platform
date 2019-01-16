@@ -27,7 +27,6 @@ $(document).ready(function() {
   })
 })
 
-
 function Display_stocks_data() {
   $.ajax("http://34.226.147.247:3000/stocks/shelf", {
     type: 'GET',
@@ -98,7 +97,7 @@ function GetUnique(inputArray) {
 function Search_all_purchase() {
   $(document).on("click", "#customer-select", function() {
     try{
-        document.getElementsByClassName("table-wrappers").remove();
+        $(".table-wrappers").empty();
     }catch(err){
       console.log('error')
     }
@@ -215,8 +214,15 @@ function Search_all_purchase() {
         }
         table.appendChild(tBody);
 
-
+        // $("#table-wrappers").appendChild(table)
         document.getElementById("table-wrappers").appendChild(table)
+
+        var purchase_all = document.createElement("button")
+        purchase_all.setAttribute("type", "button")
+        purchase_all.setAttribute("class", "btn btn-primary h5")
+        purchase_all.setAttribute("id", "purchase-delivery")
+        purchase_all.appendChild(document.createTextNode("購買商品送出"))
+        document.getElementById("table-wrappers").appendChild(purchase_all)
 
       },
       error: function(jqXHR, textStatus, errorThrown) {
@@ -226,5 +232,11 @@ function Search_all_purchase() {
     });
 
 
+  })
+}
+
+function Purchase_all_finish(){
+  $(document).on("click", "#purchase-delivery", function(){
+      
   })
 }

@@ -140,3 +140,29 @@ form.tr, div.tr{
 span.td{
     display:table-cell;
 }
+
+.alert {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+}
+
+.hint {
+  padding: 20px;
+  background-color: #4286f4;
+  color: white;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+}
+
+.closebtn:hover {
+    color: black;
+}

@@ -14,6 +14,8 @@ $(document).ready(function() {
   $('#Modal').on('show.bs.modal', function(e) {
     document.getElementById("unit").value = "";
     document.getElementById("price").value = "";
+    $(".hint_alert").empty();
+    $(".hint_alert").removeClass("alert")
   });
 
   // $('#save').click(function() {
@@ -99,6 +101,9 @@ function Edit_data() {
         if (ans5_old == "下架") {
           document.getElementById("state").selectedIndex = "1";
         }
+
+
+
       })
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -175,20 +180,28 @@ function Save_data() {
     var ans4 = document.forms["Form"]["answer4"].value;
 
     if (ans3 == null || ans3 == "") {
-      alert("請填寫單位，如『半斤』");
+      $(".hint_alert").empty();
+      $(".hint_alert").removeClass("alert")
+      ALERT("請填寫單位，如『半斤』")
       return false;
     }
     if (ans4 == null || ans4 == "" || !Number.isInteger(Number(ans4))) {
-      alert("請填寫價錢，並填寫數字");
+      $(".hint_alert").empty();
+      $(".hint_alert").removeClass("alert")
+      ALERT("請填寫價錢，並填寫數字");
       return false;
     }
     if (document.getElementById("date") == null) {
-      alert("請透過點選『商品名稱』來選擇『進貨日期』")
+      $(".hint_alert").empty();
+      $(".hint_alert").removeClass("alert")
+      ALERT("請透過點選『商品名稱』來選擇『進貨日期』")
+      return false
     } else {
       var ans2 = document.forms["Form"]["answer2"].value;
       var ans1 = document.forms["Form"]["answer1"].value;
       var ans5 = document.forms["Form"]["answer5"].value;
     }
+    $(".hint_alert").removeClass("alert")
 
     $.ajax({
       type: 'GET',
@@ -203,7 +216,9 @@ function Save_data() {
           }
 
           if (result[i].iname == ans1 && result[i].date == ans2 && result[i].unit == ans3) {
-            alert('此產品已在表單中，若要編輯該品項請去該項目編輯')
+            $(".hint_alert").empty();
+            $(".hint_alert").removeClass("alert")
+            ALERT('此產品已在表單中，若要編輯該品項請去該項目編輯')
             flag = flag + 1
           }
         }
@@ -226,7 +241,9 @@ function Save_data() {
             },
             success: function() {
               console.log("update success")
-              alert("已儲存，請重新整理")
+              $(".hint_hint").empty();
+              $(".hint_hint").removeClass("hint")
+              HINT("已儲存，請重新整理")
             },
             contentType: "application/x-www-form-urlencoded",
             dataType: "Text"
@@ -242,8 +259,6 @@ function Save_data() {
     })
 
     $('.close').click()
-
-
   });
 }
 
@@ -260,7 +275,7 @@ function Get_items_data() {
       var headRow = document.createElement("tr");
 
       var HeadName = ["商品編號", "商品名稱", "進貨日期", "單位", "價錢", "狀態", "行為"]
-      var AttributesClass = ["col col1 h6", "col col2 h6", "col col3 h6", "col col4 h6", "col col5 h6", "col col6 h6", "col col7 h6"]
+      var AttributesClass = ["col col1", "col col2", "col col3", "col col4", "col col5", "col col6", "col col7"]
       var AttributesDataColumn = ["col1", "col2", "col3", "col4", "col5", "col6", "col7"]
 
       for (i = 0; i < 7; i++) {
@@ -308,13 +323,13 @@ function Get_items_data() {
           }
 
           if (j == 6) {
-            var para = ["edit", "delete"];
+            var para = ["edit h3", "delete h3"];
             var icon = ["\uE254", "\uE872"];
 
             for (k = 0; k < 2; k++) {
               var but = document.createElement("button");
               but.setAttribute("class", para[k]);
-              but.setAttribute("class", "h3");
+              // but.setAttribute("class", "h3");
               but.setAttribute("type", "button");
               if (k == 0) {
                 but.setAttribute("data-toggle", "modal");
@@ -334,8 +349,8 @@ function Get_items_data() {
           }
 
 
-          td.setAttribute("class", AttributesClass[j]);
-          td.setAttribute("class", "h3");
+          td.setAttribute("class", AttributesClass[j] + " h3");
+          // td.setAttribute("class", "h3");
           td.setAttribute("data-column", AttributesDataColumn[j]);
           tr.appendChild(td);
         }
@@ -366,17 +381,15 @@ function GetUnique(inputArray) {
   return outputArray;
 }
 
-
 function Delete_data() {
   $(document).on("click", ".delete", function() {
-        $(document).on("click", ".edit", function() {
-          var tr_handle = $(this).closest('tr')
-          ans1_old = tr_handle.find(".col2").text()
-          ans2_old = tr_handle.find(".col3").text()
-          ans3_old = tr_handle.find(".col4").text()
-          ans4_old = tr_handle.find(".col5").text()
-          ans5_old = tr_handle.find(".col6").text()
-        })
+
+    var tr_handle = $(this).closest('tr')
+    ans1_old = tr_handle.find(".col2").text()
+    ans2_old = tr_handle.find(".col3").text()
+    ans3_old = tr_handle.find(".col4").text()
+    ans4_old = tr_handle.find(".col5").text()
+    ans5_old = tr_handle.find(".col6").text()
 
     $.ajax({
       type: 'PUT',
@@ -395,10 +408,44 @@ function Delete_data() {
       },
       success: function() {
         console.log("update success")
-        alert("已刪除，請重新整理")
+        $(".hint_hint").empty();
+        $(".hint_hint").removeClass("hint")
+        HINT("已刪除，請重新整理")
       },
       contentType: "application/x-www-form-urlencoded",
       dataType: "Text"
     });
   })
+}
+
+
+function ALERT(text) {
+  $(".hint_alert").addClass('alert')
+  var span_hint = document.createElement("span")
+  var strong_text = document.createElement("strong")
+
+  span_hint.setAttribute("class", "closebtn")
+  span_hint.setAttribute("onclick", "this.parentElement.style.display='none';")
+
+  span_hint.appendChild(document.createTextNode("×"))
+  strong_text.appendChild(document.createTextNode(text))
+
+  document.getElementsByClassName("hint_alert")[0].appendChild(span_hint)
+  document.getElementsByClassName("hint_alert")[0].appendChild(strong_text)
+}
+
+
+function HINT(text) {
+  $(".hint_hint").addClass('hint')
+  var span_hint = document.createElement("span")
+  var strong_text = document.createElement("strong")
+
+  span_hint.setAttribute("class", "closebtn")
+  span_hint.setAttribute("onclick", "this.parentElement.style.display='none';")
+
+  span_hint.appendChild(document.createTextNode("×"))
+  strong_text.appendChild(document.createTextNode(text))
+
+  document.getElementsByClassName("hint_hint")[0].appendChild(span_hint)
+  document.getElementsByClassName("hint_hint")[0].appendChild(strong_text)
 }
