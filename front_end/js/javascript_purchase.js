@@ -1,6 +1,7 @@
 $(document).ready(function() {
   Display_stocks_data()
   Search_all_purchase()
+  Purchase_all_finish()
   // 處理消費者按鈕
   $(document).on("click", "#customer-confirm", function() {
     var empty = false;
@@ -249,7 +250,7 @@ function Purchase_all_finish() {
 
       ori_price = ori_price + Number($(".col4")[i + 1].innerHTML) * amount_v
     }
-
+    console.log(ori_price)
     var tot_price = document.getElementById("inputmoney").value
     if (tot_price == null || tot_price == "" || !Number.isInteger(Number(tot_price))) {
       $(".hint_alert").empty();
@@ -266,14 +267,23 @@ function Purchase_all_finish() {
       ALERT("請填寫購買人手機，或是輸入名字並按下『購買人身份確認按鈕』")
       return false
     }
-    var timestamp = new Date()
-
+    var timestamp = +new Date()
+    $(".hint_alert").empty();
+    $(".hint_alert").removeClass("alert")
 
     for (i = 0; i < purchase_num; i++) {
       var iname = $(".col1")[i + 1].innerHTML
       var idate = $(".col2")[i + 1].innerHTML
       var iunit = $(".col3")[i + 1].innerHTML
       var inum = document.getElementsByClassName('amount')[i].value
+      console.log(cname)
+      console.log(idate)
+      console.log(iunit)
+      console.log(tot_price)
+      console.log(discount)
+      console.log(iname)
+      console.log(inum)
+      console.log(timestamp)
 
       $.ajax({
         type: 'PUT',
@@ -291,15 +301,46 @@ function Purchase_all_finish() {
         },
         success: function() {
           console.log("update success")
-          location.reload();
-
           $(".hint_hint").empty();
           $(".hint_hint").removeClass("hint")
-          HINT("已儲存，請重新整理")
+          HINT("交易已儲存，請重新整理")
         },
         contentType: "application/x-www-form-urlencoded",
         dataType: "Text"
       });
     }
   })
+}
+
+
+
+function ALERT(text) {
+  $(".hint_alert").addClass('alert')
+  var span_hint = document.createElement("span")
+  var strong_text = document.createElement("strong")
+
+  span_hint.setAttribute("class", "closebtn")
+  span_hint.setAttribute("onclick", "this.parentElement.style.display='none';")
+
+  span_hint.appendChild(document.createTextNode("×"))
+  strong_text.appendChild(document.createTextNode(text))
+
+  document.getElementsByClassName("hint_alert")[0].appendChild(span_hint)
+  document.getElementsByClassName("hint_alert")[0].appendChild(strong_text)
+}
+
+
+function HINT(text) {
+  $(".hint_hint").addClass('hint')
+  var span_hint = document.createElement("span")
+  var strong_text = document.createElement("strong")
+
+  span_hint.setAttribute("class", "closebtn")
+  span_hint.setAttribute("onclick", "this.parentElement.style.display='none';")
+
+  span_hint.appendChild(document.createTextNode("×"))
+  strong_text.appendChild(document.createTextNode(text))
+
+  document.getElementsByClassName("hint_hint")[0].appendChild(span_hint)
+  document.getElementsByClassName("hint_hint")[0].appendChild(strong_text)
 }
