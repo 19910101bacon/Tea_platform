@@ -21,7 +21,7 @@ $(document).ready(function() {
   });
 
 
-  $(document).on("click", ".delete", function(){
+  $(document).on("click", ".delete", function() {
     var tr_handle = $(this).closest('tr');
     tr_handle.remove();
   })
@@ -96,9 +96,9 @@ function GetUnique(inputArray) {
 
 function Search_all_purchase() {
   $(document).on("click", "#customer-select", function() {
-    try{
-        $(".table-wrappers").empty();
-    }catch(err){
+    try {
+      $(".table-wrappers").empty();
+    } catch (err) {
       console.log('error')
     }
 
@@ -122,14 +122,13 @@ function Search_all_purchase() {
         var headRow = document.createElement("tr");
 
         var HeadName = ["商品名稱", "進貨日期", "單位", "價錢", "份數", "行為"]
-        var AttributesClass = ["col col1 h6", "col col2 h6", "col col3 h6", "col col4 h6", "col col5 h6", "col col6 h6"]
+        var AttributesClass = ["col col1", "col col2", "col col3", "col col4", "col col5", "col col6"]
         var AttributesDataColumn = ["col1", "col2", "col3", "col4", "col5", "col6"]
 
         for (i = 0; i < 6; i++) {
           var th = document.createElement("th");
           th.appendChild(document.createTextNode(HeadName[i]));
-          th.setAttribute("class", AttributesClass[i]);
-          th.setAttribute("class", "h2");
+          th.setAttribute("class", AttributesClass[i] + " h2");
           th.setAttribute("data-column", AttributesDataColumn[i]);
           headRow.appendChild(th);
         }
@@ -172,7 +171,7 @@ function Search_all_purchase() {
               var input = document.createElement("input");
 
               input.setAttribute("type", "text")
-              input.setAttribute("id", "amount")
+              input.setAttribute("class", "amount")
               span_form.setAttribute("class", "td")
               input_form.setAttribute("class", "tr")
               div_form.setAttribute("class", "table")
@@ -205,8 +204,8 @@ function Search_all_purchase() {
               }
             }
 
-            td.setAttribute("class", AttributesClass[j]);
-            td.setAttribute("class", "h3");
+            td.setAttribute("class", AttributesClass[j] + ' h3');
+            // td.setAttribute("class", "h3");
             td.setAttribute("data-column", AttributesDataColumn[j]);
             tr.appendChild(td);
           }
@@ -235,8 +234,72 @@ function Search_all_purchase() {
   })
 }
 
-function Purchase_all_finish(){
-  $(document).on("click", "#purchase-delivery", function(){
-      
+function Purchase_all_finish() {
+  $(document).on("click", "#purchase-delivery", function() {
+    var purchase_num = $(".col1").length - 1
+    var ori_price = 0
+    for (i = 0; i < purchase_num; i++) {
+      var amount_v = document.getElementsByClassName('amount')[i].value
+      if (amount_v == null || amount_v == "" || !Number.isInteger(Number(amount_v))) {
+        $(".hint_alert").empty();
+        $(".hint_alert").removeClass("alert")
+        ALERT("請填寫品項購買數量，或是刪除該品項")
+        return false
+      }
+
+      ori_price = ori_price + Number($(".col4")[i + 1].innerHTML) * amount_v
+    }
+
+    var tot_price = document.getElementById("inputmoney").value
+    if (tot_price == null || tot_price == "" || !Number.isInteger(Number(tot_price))) {
+      $(".hint_alert").empty();
+      $(".hint_alert").removeClass("alert")
+      ALERT("請填寫總價錢，如『500』")
+      return false
+    }
+    var discount = ori_price - tot_price
+
+    var cname = document.getElementById("inputtellphoneinline").value
+    if (cname == null || cname == "") {
+      $(".hint_alert").empty();
+      $(".hint_alert").removeClass("alert")
+      ALERT("請填寫購買人手機，或是輸入名字並按下『購買人身份確認按鈕』")
+      return false
+    }
+    var timestamp = new Date()
+
+
+    for (i = 0; i < purchase_num; i++) {
+      var iname = $(".col1")[i + 1].innerHTML
+      var idate = $(".col2")[i + 1].innerHTML
+      var iunit = $(".col3")[i + 1].innerHTML
+      var inum = document.getElementsByClassName('amount')[i].value
+
+      $.ajax({
+        type: 'PUT',
+        url: 'http://34.226.147.247:3000/purchases/update',
+        data: {
+          cname: cname,
+          idate: idate,
+          iunit: iunit,
+          tot_price: tot_price,
+          discount: discount,
+          iname: iname,
+          inum: inum,
+          timestamp: timestamp,
+          purchase_state: '完成'
+        },
+        success: function() {
+          console.log("update success")
+          location.reload();
+
+          $(".hint_hint").empty();
+          $(".hint_hint").removeClass("hint")
+          HINT("已儲存，請重新整理")
+        },
+        contentType: "application/x-www-form-urlencoded",
+        dataType: "Text"
+      });
+    }
   })
 }

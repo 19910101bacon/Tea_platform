@@ -6,11 +6,12 @@ var purchase = new Schema({
   tot_price: Number,
   ori_price: Number,
   discount: Number,
-  buy: {
-    iname: [String],
-    inum: [Number]
-  },
-  timestamp: Number
+  iname: String,
+  idate: String,
+  iunit: String,
+  inum: Number,
+  timestamp: Number,
+  purchase_state: String
 }, {
   versionKey: false
 });

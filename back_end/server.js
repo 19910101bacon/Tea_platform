@@ -263,6 +263,52 @@ app.get('/purchases', function(request, response) {
   })
 });
 
+app.put('/purchases/update', parseUrlencoded, function(request, response) {
+  purchase.update({
+    cname: request.body.cname_old,
+    idate: request.body.idate_old,
+    iunit: request.body.iunit_old,
+    tot_price: request.body.tot_price_old,
+    discount: request.body.discount_old,
+    iname: request.body.iname_old,
+    inum: request.body.inum_old,
+    timestamp: request.body.timestamp_old,
+    purchase_state: request.body.purchase_state_old
+  }, {
+    $set: {
+      purchase_statestate: "刪除"
+    }
+  }, function(err, result) {
+    if (err)
+      console.log(err);
+    console.log(result);
+
+    var json = {
+      cname: request.body.cname,
+      idate: request.body.idate,
+      iunit: request.body.iunit,
+      tot_price: request.body.tot_price,
+      discount: request.body.discount,
+      iname: request.body.iname,
+      inum: request.body.inum,
+      timestamp: request.body.timestamp,
+      purchase_state: request.body.purchase_state
+    }
+
+    // json.timestamp = +new Date();
+    newjson = new purchase(json);
+    newjson.save(function(err) {
+      if (!err) {
+        response.send("Success!");
+      } else {
+        console.log(err);
+      }
+    });
+  });
+});
+
+
+
 app.post('/purchases', parseUrlencoded, function(request, response) {
   var json = {
     cname: request.body.cname,

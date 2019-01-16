@@ -18,6 +18,8 @@ $(document).ready(function() {
     document.getElementById("date").value = "";
     document.getElementById("amount").value = "";
     document.getElementById("money").value = "";
+    $(".hint_alert").empty();
+    $(".hint_alert").removeClass("alert")
   });
 })
 
@@ -172,20 +174,28 @@ function Save_data() {
     var ans3 = document.forms["Form"]["answer3"].value;
     var ans4 = document.forms["Form"]["answer4"].value;
 
-    if (ans1 == null || ans3 == "") {
-      alert("請填寫商品名稱，如『大禹嶺』");
+    if (ans1 == null || ans1 == "") {
+      $(".hint_alert").empty();
+      $(".hint_alert").removeClass("alert")
+      ALERT("請填寫商品名稱，如『大禹嶺』");
       return false;
     }
     if (ans2 == null || ans2 == "") {
-      alert("請填寫進貨日期，如『2019/01/01』");
+      $(".hint_alert").empty();
+      $(".hint_alert").removeClass("alert")
+      ALERT("請填寫進貨日期，如『2019/01/01』");
       return false;
     }
     if (ans3 == null || ans3 == "" || !Number.isInteger(Number(ans3))) {
-      alert("請填寫進貨量，並填寫數字，如30");
+      $(".hint_alert").empty();
+      $(".hint_alert").removeClass("alert")
+      ALERT("請填寫進貨量，並填寫數字，如30");
       return false;
     }
     if (ans4 == null || ans4 == "" || !Number.isInteger(Number(ans4))) {
-      alert("請填寫價錢，並填寫數字");
+      $(".hint_alert").empty();
+      $(".hint_alert").removeClass("alert")
+      ALERT("請填寫價錢，並填寫數字");
       return false;
     }
     var ans5 = document.forms["Form"]["answer5"].value;
@@ -199,7 +209,9 @@ function Save_data() {
         // flag = 0; //To record whether typing_Iname matches the data from database or not
         for (var i = 0; i < len; i++) {
           if (result[i].iname == ans1_old && result[i].date == ans2_old) {
-            alert('此產品已在表單中，若要編輯該品項請去該項目編輯')
+            $(".hint_alert").empty();
+            $(".hint_alert").removeClass("alert")
+            ALERT('此產品已在表單中，若要編輯該品項請去該項目編輯')
             flag = flag + 1
           }
         }
@@ -223,7 +235,9 @@ function Save_data() {
             },
             success: function() {
               console.log("update success")
-              alert("已儲存，請重新整理")
+              $(".hint_hint").empty();
+              $(".hint_hint").removeClass("hint")
+              HINT("已儲存，請重新整理")
             },
             contentType: "application/x-www-form-urlencoded",
             dataType: "Text"
@@ -384,7 +398,9 @@ function Delete_data() {
       },
       success: function() {
         console.log("update success")
-        alert("已刪除，請重新整理")
+        $(".hint_hint").empty();
+        $(".hint_hint").removeClass("hint")
+        HINT("已刪除，請重新整理")
       },
       contentType: "application/x-www-form-urlencoded",
       dataType: "Text"
@@ -413,4 +429,36 @@ function Delete_data() {
     });
 
   })
+}
+
+
+function ALERT(text) {
+  $(".hint_alert").addClass('alert')
+  var span_hint = document.createElement("span")
+  var strong_text = document.createElement("strong")
+
+  span_hint.setAttribute("class", "closebtn")
+  span_hint.setAttribute("onclick", "this.parentElement.style.display='none';")
+
+  span_hint.appendChild(document.createTextNode("×"))
+  strong_text.appendChild(document.createTextNode(text))
+
+  document.getElementsByClassName("hint_alert")[0].appendChild(span_hint)
+  document.getElementsByClassName("hint_alert")[0].appendChild(strong_text)
+}
+
+
+function HINT(text) {
+  $(".hint_hint").addClass('hint')
+  var span_hint = document.createElement("span")
+  var strong_text = document.createElement("strong")
+
+  span_hint.setAttribute("class", "closebtn")
+  span_hint.setAttribute("onclick", "this.parentElement.style.display='none';")
+
+  span_hint.appendChild(document.createTextNode("×"))
+  strong_text.appendChild(document.createTextNode(text))
+
+  document.getElementsByClassName("hint_hint")[0].appendChild(span_hint)
+  document.getElementsByClassName("hint_hint")[0].appendChild(strong_text)
 }
