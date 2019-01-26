@@ -264,7 +264,7 @@ function Purchase_all_finish() {
     if (cname == null || cname == "") {
       $(".hint_alert").empty();
       $(".hint_alert").removeClass("alert")
-      ALERT("請填寫購買人手機，或是輸入名字並按下『購買人身份確認按鈕』")
+      ALERT("請填寫購買人手機")
       return false
     }
     var timestamp = +new Date()
