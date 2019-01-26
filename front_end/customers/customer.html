@@ -11,70 +11,93 @@
   <meta name="keywords" content="Pingendo bootstrap example template wireframe pricing table">
   <meta name="author" content="Pingendo">
   <!-- CSS dependencies -->
+  <!-- icon -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
   <link rel="stylesheet" href="../css/wireframe.css">
   <link rel="stylesheet" href="../css/style.css">
-
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-  <script src="../js/javascript_customer.js"></script>
+  <!-- JS -->
+  <!-- Modal -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src="../js/javascript_item.js"></script>
   <script src="../js/javascript_style.js"></script>
+  <script src="../css/chosen_v1.8.7/docsupport/jquery-3.2.1.min.js" type="text/javascript"></script>
 
 </head>
 
 <body class="bg-light">
   <div class="d-flex flex-column flex-md-row align-items-center p-3 mb-3 box-shadow border-bottom">
-    <a class="my-0 mr-md-auto font-weight-normal h1" href="../index.html"><b>瑞信陶藝茶坊</b></a>
+    <a class="my-0 mr-md-auto font-weight-normal h1" href="../index.html" style="font-size:50px"><b>瑞信陶藝茶坊</b></a>
     <nav class="my-2 my-md-0 mr-md-3">
-      <a class="p-2 text-dark" href="../items/item.html" style="font-size:28px">商品資訊</a>
-      <a class="p-2 text-dark" href="../purchases/purchase.html" style="font-size:28px">購買表單</a>
-      <a class="p-2 text-dark" href="../customers/customer.html" style="font-size:28px">客戶紀錄</a>
+      <a class="p-2 text-dark" href="../items/item.html" style="font-size:40px">商品資訊</a>
+      <a class="p-2 text-dark" href="../purchases/purchase.html" style="font-size:40px">購買表單</a>
+      <a class="p-2 text-dark" href="../customers/customer.html" style="font-size:40px">客戶紀錄</a>
+      <a class="p-2 text-dark" href="../stocks/stock.html" style="font-size:40px">商品庫存</a>
     </nav>
     <a class="btn btn-outline-info" href="#">Sign up</a>
-  </div>
-
 
   <div class="container">
     <div class="table-wrapper">
-      <div class="table-title">
-        <div class="row">
-          <div class="col-sm-8">
-            <h2 style="font-size:30px">消費者 <b>資訊</b></h2>
-          </div>
-          <div class="col-sm-4">
-            <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
-          </div>
-        </div>
-      </div>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th class="col col1 h6" data-column="col1" >消費者編號</th>
-            <th class="col col2 h6" data-column="col2" >名字</th>
-            <th class="col col3 h6" data-column="col3" >電話</th>
-            <th class="col col3 h6" data-column="col4" >行為</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="col col1 h6" data-column="col1" >1</td>
-            <td class="col col2 h6" data-column="col2" >黃培軒</td>
-            <td class="col col3 h6" data-column="col3" >0987654321</td>
-            <td>
-              <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-              <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-            </td>
-          </tr>
 
-        </tbody>
-      </table>
     </div>
   </div>
 
+  <!-- Modal -->
+  <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">新增品項</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="hint_alert"></div>
+        <div class="modal-body">
+          <form method="post" name="Form" onsubmit="return Save_data()" action="">
+            <div class="form-group row" id="iname-form">
+              <label for="iname" class="col-sm-3 col-form-label">商品名稱</label>
+            </div>
+
+            <div class="form-group row" id="date-form">
+              <label for="date" class="col-sm-3 col-form-label">進貨日期</label>
+            </div>
+
+            <div class="form-group row">
+              <label for="unit" class="col-sm-3 col-form-label">單位</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="unit" name="answer3" placeholder="半斤">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="unit" class="col-sm-3 col-form-label">價錢</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="price" name="answer4" placeholder="500">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="state" class="col-sm-3 col-form-label">狀態</label>
+              <select id="state" class="col-sm-7" name="answer5">
+                <option id="shelf">上架</option>
+                <option id=>下架</option>
+              </select>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel">取消</button>
+          <button type="button" class="btn btn-primary" id="save">儲存</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 

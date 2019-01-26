@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/Tea_platform', {
+mongoose.connect('mongodb://localhost:27017/Tea_platform', {
   useNewUrlParser: true
 });
 var express = require('express');
@@ -333,49 +333,11 @@ app.post('/purchases', parseUrlencoded, function(request, response) {
   });
 })
 
-app.get('/customers', function(request, response) {
-  customer.find(function(err, result) {
+
+app.get('/price', parseUrlencoded, function(request, response) {
+  purchase.find(function(err, result) {
     response.send(result);
     console.log(result);
-  })
-});
-
-app.post('/customers', parseUrlencoded, function(request, response) {
-  var json = {
-    cname: request.body.cname,
-    phone: request.body.phone
-  }
-  console.log(request.body);
-
-  json.timestamp = +new Date();
-  newjson = new customer(json);
-
-  customer.find({
-    phone: request.body.phone
-  }, function(err, result) {
-    // response.send(result);
-    if (!result) {
-      newjson.save(function(err) {
-        if (!err) {
-          response.send("Success!");
-        } else {
-          console.log(err);
-        }
-      });
-    } else {
-      customer.find({
-        phone: request.body.phone
-      }).remove().exec();
-      // console.log(123);
-      newjson.cname = request.body.cname;
-      newjson.save(function(err) {
-        if (!err) {
-          response.send("Success!");
-        } else {
-          console.log(err);
-        }
-      });
-    }
   })
 })
 
