@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:30000/Tea_platform', {
+mongoose.connect('mongodb://localhost:29876/Tea_platform', {
   useNewUrlParser: true
 });
 var express = require('express');
