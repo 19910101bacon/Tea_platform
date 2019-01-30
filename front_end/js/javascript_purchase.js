@@ -29,7 +29,7 @@ $(document).ready(function() {
 })
 
 function Display_stocks_data() {
-  $.ajax("http://34.226.147.247:3000/stocks/shelf", {
+  $.ajax("http://3.88.219.133:3000/stocks/shelf", {
     type: 'GET',
     success: function(result) {
       var iname = [];
@@ -111,7 +111,7 @@ function Search_all_purchase() {
     }
 
 
-    $.ajax("http://34.226.147.247:3000/items/shelf", {
+    $.ajax("http://3.88.219.133:3000/items/shelf", {
       type: 'GET',
       success: function(result) {
         // Create table
@@ -287,7 +287,7 @@ function Purchase_all_finish() {
 
       $.ajax({
         type: 'PUT',
-        url: 'http://34.226.147.247:3000/purchases/update',
+        url: 'http://3.88.219.133:3000/purchases/update',
         data: {
           cname: cname,
           idate: idate,

@@ -25,7 +25,7 @@ $(document).ready(function() {
 
 
 function Edit_data() {
-  $.ajax("http://34.226.147.247:3000/stocks/shelf", {
+  $.ajax("http://3.88.219.133:3000/stocks/shelf", {
     type: 'GET',
     success: function(result) {
       $(document).on("click", ".edit", function() {
@@ -109,7 +109,7 @@ function Edit_data() {
 }
 
 function Display_select_data() {
-  $.ajax("http://34.226.147.247:3000/stock/shelf", {
+  $.ajax("http://3.88.219.133:3000/stock/shelf", {
     type: 'GET',
     success: function(result) {
       var iname = [];
@@ -202,7 +202,7 @@ function Save_data() {
 
     $.ajax({
       type: 'GET',
-      url: 'http://34.226.147.247:3000/stocks/shelf',
+      url: 'http://3.88.219.133:3000/stocks/shelf',
       success: function(result) {
         var len = result.length;
         var flag = 0;
@@ -220,7 +220,7 @@ function Save_data() {
         if (flag == 0) {
           $.ajax({
             type: 'PUT',
-            url: 'http://34.226.147.247:3000/stock/update',
+            url: 'http://3.88.219.133:3000/stock/update',
             data: {
               iname_old: ans1_old,
               date_old: ans2_old,
@@ -260,7 +260,7 @@ function Save_data() {
 
 // ok
 function Get_stocks_data() {
-  $.ajax("http://34.226.147.247:3000/stocks/shelf", {
+  $.ajax("http://3.88.219.133:3000/stocks/shelf", {
     type: 'GET',
     success: function(result) {
       // Create table
@@ -383,7 +383,7 @@ function Delete_data() {
 
     $.ajax({
       type: 'PUT',
-      url: 'http://34.226.147.247:3000/stock/update',
+      url: 'http://3.88.219.133:3000/stock/update',
       data: {
         iname_old: ans1_old,
         date_old: ans2_old,
@@ -408,7 +408,7 @@ function Delete_data() {
 
     $.ajax({
       type: 'PUT',
-      url: 'http://34.226.147.247:3000/items/update_afterstock',
+      url: 'http://3.88.219.133:3000/items/update_afterstock',
       data: {
         iname_old: ans1_old,
         date_old: ans2_old,

@@ -4,7 +4,7 @@ $(document).ready(function() {
 
 
 function calculate() {
-  $.ajax("http://34.226.147.247:3000/price", {
+  $.ajax("http://3.88.219.133:3000/price", {
     type: 'GET',
     success: function(result) {
       var theDay = new Date()
